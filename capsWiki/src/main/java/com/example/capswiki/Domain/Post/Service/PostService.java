@@ -1,5 +1,6 @@
 package com.example.capswiki.Domain.Post.Service;
 
+import com.example.capswiki.DAO.Post.Post;
 import com.example.capswiki.DTO.Post.RequestDTO.PostRequestDTO;
 import com.example.capswiki.DTO.Post.ResponseDTO.PostResponseDTO;
 
@@ -12,7 +13,7 @@ public interface PostService {
 
     public PostResponseDTO getPost(String title);
 
-    public void updatePost(PostRequestDTO postRequestDTO, String title);
+    public Post updatePost(PostRequestDTO postRequestDTO, String title);
 
     public void deletePost(String title);
 

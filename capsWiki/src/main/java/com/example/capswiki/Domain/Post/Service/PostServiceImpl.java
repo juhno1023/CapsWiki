@@ -63,20 +63,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Transactional
-    public void updatePost(PostRequestDTO postRequestDTO, String title) {
+    public Post updatePost(PostRequestDTO postRequestDTO, String title) {
 
         // 기존 글 불러와서 isDeleted 1로 변경
         Post post = postRepository.findPostByTitleAndIsDeleted(title, 0);
-        PostDTO postDTO = new PostDTO(
-                post.getPostId(),
-                post.getTitle(),
-                post.getContent(),
-                post.getWriterName(),
-                post.getTime(),
-                post.getIsDeleted()
-        );
-        postDTO.setIs_deleted(1);
-        postRepository.save(postDTO.toEntity());
+        post.delete();
 
         // 새 글 작성
         String writerName = postRequestDTO.getWriterName();
@@ -85,7 +76,7 @@ public class PostServiceImpl implements PostService {
 
         int is_deleted = 0;
 
-        postDTO = new PostDTO(
+        PostDTO postDTO = new PostDTO(
                 NULL,
                 title,
                 content,
@@ -95,6 +86,7 @@ public class PostServiceImpl implements PostService {
         );
 
         postRepository.save(postDTO.toEntity());
+        return post; // 테스트 확인용
     }
 
     @Transactional
