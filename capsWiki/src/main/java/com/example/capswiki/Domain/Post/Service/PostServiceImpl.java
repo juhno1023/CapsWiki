@@ -48,7 +48,7 @@ public class PostServiceImpl implements PostService {
 
     public PostResponseDTO getPost(String title) {
 
-        Post post = postRepository.findPostByTitle(title);
+        Post post = postRepository.findPostByTitleAndIsDeleted(title, 0);
 
         return new PostResponseDTO(
                 post.getPostId(),
@@ -64,7 +64,7 @@ public class PostServiceImpl implements PostService {
     public void updatePost(PostRequestDTO postRequestDTO, String title) {
 
         // 기존 글 불러와서 isDeleted 1로 변경
-        Post post = postRepository.findPostByTitle(title);
+        Post post = postRepository.findPostByTitleAndIsDeleted(title, 0);
         PostDTO postDTO = new PostDTO(
                 post.getPostId(),
                 post.getTitle(),
