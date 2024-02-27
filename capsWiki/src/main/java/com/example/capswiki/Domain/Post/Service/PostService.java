@@ -12,4 +12,6 @@ public interface PostService {
 
     public void updatePost(PostRequestDTO postRequestDTO, String title);
 
+    public void deletePost(String title);
+
 }

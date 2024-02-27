@@ -41,4 +41,14 @@ public class PostController {
         }
     }
 
+    @DeleteMapping("/post/{title}") // 게시글 삭제
+    public ResponseEntity<?> deletePost(@PathVariable String title) {
+        try {
+            postService.deletePost(title);
+            return ResponseEntity.ok("Post successfully deleted");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 }

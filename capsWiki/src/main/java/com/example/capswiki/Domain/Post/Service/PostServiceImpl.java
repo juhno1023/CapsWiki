@@ -95,4 +95,9 @@ public class PostServiceImpl implements PostService {
         postRepository.save(postDTO.toEntity());
     }
 
+    @Transactional
+    public void deletePost(String title) {
+        postRepository.deleteByTitle(title);
+    }
+
 }
