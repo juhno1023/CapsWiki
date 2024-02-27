@@ -6,8 +6,6 @@ capsWiki/src/main/resources/dbsettings.properties
 #Ignore oauthsettings.properties
 capsWiki/src/main/resources/application-oauth.properties
 
-capsWiki/src/main/resources/application.properties
-
 *.idea
 *.iml
 
