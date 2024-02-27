@@ -6,10 +6,7 @@ import com.example.capswiki.Domain.Post.Service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class PostController {
@@ -29,13 +26,19 @@ public class PostController {
         }
     }
 
-//    @GetMapping("/Post/{PostId}") // 게시글 조회
-//    public ResponseEntity<PostResponseDTO> getRecruitPost(@PathVariable int recruitPostId){
-//        return ResponseEntity.ok(postService.getRecruitPost(recruitPostId));
-//    }
     @GetMapping("/post/{title}") // 게시글 조회
     public ResponseEntity<PostResponseDTO> getPost(@PathVariable String title) {
         return ResponseEntity.ok(postService.getPost(title));
+    }
+
+    @PutMapping("/post/{title}") // 게시글 수정
+    public ResponseEntity<?> updatePost(@RequestBody PostRequestDTO postRequestDTO, @PathVariable String title) {
+        try {
+            postService.updatePost(postRequestDTO, title);
+            return ResponseEntity.ok("Post successfully updated");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
 }

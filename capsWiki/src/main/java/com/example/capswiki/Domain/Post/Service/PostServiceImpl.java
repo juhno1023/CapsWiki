@@ -1,7 +1,9 @@
 package com.example.capswiki.Domain.Post.Service;
 
+import com.example.capswiki.DAO.Post.Post;
 import com.example.capswiki.DTO.Post.PostDTO;
 import com.example.capswiki.DTO.Post.RequestDTO.PostRequestDTO;
+import com.example.capswiki.DTO.Post.ResponseDTO.PostResponseDTO;
 import com.example.capswiki.Domain.Post.Repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,6 +58,41 @@ public class PostServiceImpl implements PostService {
                 post.getTime(),
                 post.getIsDeleted()
         );
+    }
+
+    @Transactional
+    public void updatePost(PostRequestDTO postRequestDTO, String title) {
+
+        // 기존 글 불러와서 isDeleted 1로 변경
+        Post post = postRepository.findPostByTitle(title);
+        PostDTO postDTO = new PostDTO(
+                post.getPostId(),
+                post.getTitle(),
+                post.getContent(),
+                post.getWriterName(),
+                post.getTime(),
+                post.getIsDeleted()
+        );
+        postDTO.setIs_deleted(1);
+        postRepository.save(postDTO.toEntity());
+
+        // 새 글 작성
+        String writerName = postRequestDTO.getWriterName();
+        String content = postRequestDTO.getContent();
+        Timestamp createdDate = new Timestamp(System.currentTimeMillis());
+
+        int is_deleted = 0;
+
+        postDTO = new PostDTO(
+                NULL,
+                title,
+                content,
+                writerName,
+                createdDate,
+                is_deleted
+        );
+
+        postRepository.save(postDTO.toEntity());
     }
 
 }
