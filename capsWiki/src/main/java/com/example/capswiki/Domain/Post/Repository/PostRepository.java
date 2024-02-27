@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface PostRepository extends JpaRepository<Post, Integer> {
 
-//    Post findPostByTitle(String title) //제목으로 검색
+    Post findPostByTitle(String title); //제목으로 검색
     Post save(Post post); // 글 저장
 
 }

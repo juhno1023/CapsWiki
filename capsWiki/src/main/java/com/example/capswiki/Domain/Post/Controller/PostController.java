@@ -33,4 +33,9 @@ public class PostController {
 //    public ResponseEntity<PostResponseDTO> getRecruitPost(@PathVariable int recruitPostId){
 //        return ResponseEntity.ok(postService.getRecruitPost(recruitPostId));
 //    }
+    @GetMapping("/post/{title}") // 게시글 조회
+    public ResponseEntity<PostResponseDTO> getPost(@PathVariable String title) {
+        return ResponseEntity.ok(postService.getPost(title));
+    }
+
 }

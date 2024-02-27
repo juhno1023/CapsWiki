@@ -43,4 +43,19 @@ public class PostServiceImpl implements PostService {
         postRepository.save(postDTO.toEntity());
         //레포지토리에 JPA save를 통해서 위 추출한 정보들을 DB에 저장! 이때 엔티티로 .toEntity()를 통해 변환해서 저장하여야함.
     }
+
+    public PostResponseDTO getPost(String title) {
+
+        Post post = postRepository.findPostByTitle(title);
+
+        return new PostResponseDTO(
+                post.getPostId(),
+                post.getTitle(),
+                post.getWriterName(),
+                post.getContent(),
+                post.getTime(),
+                post.getIsDeleted()
+        );
+    }
+
 }
