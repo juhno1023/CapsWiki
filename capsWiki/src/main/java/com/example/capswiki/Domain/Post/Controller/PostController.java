@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 public class PostController {
 
@@ -49,6 +51,11 @@ public class PostController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    @GetMapping("/post/history/{title}") // 게시글 수정 내역 조회
+    public ResponseEntity<List<PostResponseDTO>> getPostHistory(@PathVariable String title) {
+        return ResponseEntity.ok(postService.getPostHistory(title));
     }
 
 }

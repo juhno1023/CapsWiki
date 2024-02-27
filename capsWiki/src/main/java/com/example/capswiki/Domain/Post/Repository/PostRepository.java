@@ -13,6 +13,7 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 
     Post findPostByTitleAndIsDeleted(String title, int isDeleted); //제목으로 검색
     Post save(Post post); // 글 저장
-    Post deleteByTitle(String title);
+    Post deleteByTitle(String title); //제목으로 삭제
+    List<Post> findPostByTitleOrderByTime(String title); //제목으로 전부 검색
 
 }

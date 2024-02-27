@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.sql.Types.NULL;
 
@@ -98,6 +100,22 @@ public class PostServiceImpl implements PostService {
     @Transactional
     public void deletePost(String title) {
         postRepository.deleteByTitle(title);
+    }
+
+    public List<PostResponseDTO> getPostHistory(String title) {
+
+        List<Post> postList = postRepository.findPostByTitleOrderByTime(title);
+
+        return postList.stream()
+                .map(post -> new PostResponseDTO(
+                        post.getPostId(),
+                        post.getTitle(),
+                        post.getWriterName(),
+                        post.getContent(),
+                        post.getTime(),
+                        post.getIsDeleted()
+                ))
+                .collect(Collectors.toList());
     }
 
 }
