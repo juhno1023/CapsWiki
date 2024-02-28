@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class PostDTO {
 
-    private int recruitPostId;
+    private int postId;
 
     private String title;
 
@@ -23,7 +23,7 @@ public class PostDTO {
 
     public Post toEntity() {
         return Post.builder()
-                .postId(recruitPostId)
+                .postId(postId)
                 .writerName(writerName)
                 .title(title)
                 .content(content)
