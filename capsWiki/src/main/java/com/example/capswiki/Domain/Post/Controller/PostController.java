@@ -17,7 +17,7 @@ public class PostController {
     @Autowired
     private PostService postService;
 
-    @PostMapping("/recruitPost") // 글 작성
+    @PostMapping("/post") // 글 작성
     // ResponseEntity를 통해 요청에 대한 응답을 보냄
     public ResponseEntity<?> createRecruitPostAndTeam(@RequestBody PostRequestDTO recruitPostDTO) {
         //위 RequestBody를 통해 전달된 DTO를 통해 클라이언트의 요청을 처리함
@@ -29,8 +29,15 @@ public class PostController {
         }
     }
 
-//    @GetMapping("/Post/{PostId}") // 게시글 조회
-//    public ResponseEntity<PostResponseDTO> getRecruitPost(@PathVariable int recruitPostId){
-//        return ResponseEntity.ok(postService.getRecruitPost(recruitPostId));
-//    }
+    @GetMapping("/home") // 게시글 메인화면 조회
+    public ResponseEntity<?> getPostList(){
+        return ResponseEntity.ok(postService.getPostList());
+    }
+
+    @GetMapping("/post/random") // 게시글 랜덤 조회
+    public ResponseEntity<?> getRandomPost(){
+        return ResponseEntity.ok(postService.getRandomPost());
+    }
+
+
 }

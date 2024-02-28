@@ -11,7 +11,10 @@ import java.util.List;
 @Repository
 public interface PostRepository extends JpaRepository<Post, Integer> {
 
-//    Post findPostByTitle(String title) //제목으로 검색
+    Post findPostByPostId(int postId);
     Post save(Post post); // 글 저장
 
+    List<Post> findPostsByIsDeletedOrderByTimeDesc(int isDeleted);
+
+    List<Post> findAllByIsDeleted(int isDeleted);
 }
