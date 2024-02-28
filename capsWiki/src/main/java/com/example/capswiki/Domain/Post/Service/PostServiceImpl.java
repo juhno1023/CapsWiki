@@ -13,6 +13,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import static java.sql.Types.NULL;
 
@@ -49,6 +50,69 @@ public class PostServiceImpl implements PostService {
         //레포지토리에 JPA save를 통해서 위 추출한 정보들을 DB에 저장! 이때 엔티티로 .toEntity()를 통해 변환해서 저장하여야함.
     }
 
+    public PostResponseDTO getPost(String title) {
+
+        Post post = postRepository.findPostByTitleAndIsDeleted(title, 0);
+
+        return new PostResponseDTO(
+                post.getPostId(),
+                post.getTitle(),
+                post.getWriterName(),
+                post.getContent(),
+                post.getTime(),
+                post.getIsDeleted()
+        );
+    }
+
+    @Transactional
+    public Post updatePost(PostRequestDTO postRequestDTO, String title) {
+
+        // 기존 글 불러와서 isDeleted 1로 변경
+        Post post = postRepository.findPostByTitleAndIsDeleted(title, 0);
+        post.delete();
+
+        // 새 글 작성
+        String writerName = postRequestDTO.getWriterName();
+        String content = postRequestDTO.getContent();
+        Timestamp createdDate = new Timestamp(System.currentTimeMillis());
+
+        int is_deleted = 0;
+
+        PostDTO postDTO = new PostDTO(
+                NULL,
+                title,
+                content,
+                writerName,
+                createdDate,
+                is_deleted
+        );
+
+        postRepository.save(postDTO.toEntity());
+        return post; // 테스트 확인용
+    }
+
+    @Transactional
+    public void deletePost(String title) {
+        postRepository.deleteByTitle(title);
+    }
+
+    public List<PostResponseDTO> getPostHistory(String title) {
+
+        List<Post> postList = postRepository.findPostByTitleOrderByTime(title);
+
+        return postList.stream()
+                .map(post -> new PostResponseDTO(
+                        post.getPostId(),
+                        post.getTitle(),
+                        post.getWriterName(),
+                        post.getContent(),
+                        post.getTime(),
+                        post.getIsDeleted()
+                ))
+                .collect(Collectors.toList());
+    }
+
+
     @Transactional
     public PostResponseDTO getRandomPost(){
         // 등록된 총 게시글의 개수를 가져옴
@@ -62,7 +126,7 @@ public class PostServiceImpl implements PostService {
 
         while (tempPost == null) {
             // 총 개수를 범위로 지정하여 난수를 생성
-            i = random.nextInt(num) + 1;
+            i = random.nextInt(num);
             tempPost = postList.get(i); //해당 난수를 인덱스로 가지는 게시글 선택
         }
 
